@@ -22,7 +22,7 @@ A web application to organize, search, and track your favorite recipes, built to
 
 ## 🔧 Installation & Usage
 1. Clone the repo:
-   git clone https://github.com/YOUR-USERNAME/recipe-manager-app.git
+   git clone https://github.com/renea2024/recipe-manager.git
 2. Open index.html in your browser
 3. Start adding and managing your recipes
 
