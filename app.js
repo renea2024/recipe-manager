@@ -1,56 +1,243 @@
-// ===== Recipe Manager App - Starter JS =====
+// ==============================
+// 📌 GLOBAL CONSTANTS & SELECTORS
+// ==============================
 
-// 1️⃣ Sample Recipe Objects
-const recipes = [
+// Storage key
+const STORAGE_KEY = "recipes";
+
+// Inputs & UI
+const searchInput = document.getElementById("search");
+const recipesContainer = document.getElementById("recipes");
+const favoritesContainer = document.getElementById("favorites");
+
+// Modal عناصر
+const modal = document.getElementById("modal");
+const nameInput = document.getElementById("name");
+const ingredientsInput = document.getElementById("ingredients");
+const notesInput = document.getElementById("notes");
+
+const addBtn = document.getElementById("addBtn");
+const saveBtn = document.getElementById("saveBtn");
+const cancelBtn = document.getElementById("cancelBtn");
+
+// Track editing state
+let editingId = null;
+
+
+// ==============================
+// 💾 LOCAL STORAGE
+// ==============================
+
+// Save to localStorage
+function saveRecipes() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(recipes));
+}
+
+// Load from localStorage or fallback data
+let recipes = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [
   {
+    id: Date.now(),
     name: "BBQ Chicken",
-    servings: 4,
-    ingredients: ["Chicken", "BBQ Sauce", "Olive Oil", "Garlic", "Salt", "Pepper"],
-    isFavorite: true,
-    cookTime: 45
+    ingredients: ["Chicken", "BBQ Sauce", "Garlic"],
+    isFavorite: true
   },
   {
-    name: "Spaghetti Bolognese",
-    servings: 6,
-    ingredients: ["Spaghetti", "Ground Beef", "Tomato Sauce", "Onion", "Garlic"],
-    isFavorite: false,
-    cookTime: 60
+    id: Date.now() + 1,
+    name: "Spaghetti",
+    ingredients: ["Pasta", "Tomato Sauce"],
+    isFavorite: false
   }
 ];
 
-// 2️⃣ Function to Render Recipes in the UI
-function renderRecipes(recipeArray) {
-  const container = document.getElementById("recipe-list"); // Make sure you have a <div id="recipe-list"></div> in HTML
-  container.innerHTML = ""; // Clear previous content
 
-  recipeArray.forEach(recipe => {
-    // Create a recipe card
-    const card = document.createElement("div");
-    card.classList.add("recipe-card");
+// ==============================
+// 🔍 RENDER FUNCTION
+// ==============================
 
-    // Recipe Name & Favorite Status
-    const title = document.createElement("h2");
-    title.textContent = recipe.name + (recipe.isFavorite ? " ⭐" : "");
-    card.appendChild(title);
+/**
+ * Render recipes based on search
+ */
+function renderRecipes(searchTerm = "") {
+  recipesContainer.innerHTML = "";
+  favoritesContainer.innerHTML = "";
 
-    // Servings and Cook Time
-    const info = document.createElement("p");
-    info.textContent = `Servings: ${recipe.servings} | Cook Time: ${recipe.cookTime} mins`;
-    card.appendChild(info);
+  const query = searchTerm.toLowerCase();
 
-    // Ingredients List
-    const list = document.createElement("ul");
-    recipe.ingredients.forEach(ingredient => {
-      const li = document.createElement("li");
-      li.textContent = ingredient;
-      list.appendChild(li);
-    });
-    card.appendChild(list);
-
-    // Append card to container
-    container.appendChild(card);
+  const filteredRecipes = recipes.filter(recipe => {
+    const nameMatch = recipe.name.toLowerCase().includes(query);
+    const ingredientMatch = recipe.ingredients.some(ing =>
+      ing.toLowerCase().includes(query)
+    );
+    return nameMatch || ingredientMatch;
   });
+
+  const favorites = filteredRecipes.filter(r => r.isFavorite);
+
+  // Render all
+  filteredRecipes.forEach(recipe => {
+    recipesContainer.appendChild(createRecipeCard(recipe));
+  });
+
+  // Render favorites
+  if (favorites.length === 0) {
+    favoritesContainer.innerHTML = `<div class="empty">No favorites found.</div>`;
+  } else {
+    favorites.forEach(recipe => {
+      favoritesContainer.appendChild(createRecipeCard(recipe));
+    });
+  }
 }
 
-// 3️⃣ Initial Render
-renderRecipes(recipes);
+
+// ==============================
+// 🧱 CREATE CARD
+// ==============================
+
+function createRecipeCard(recipe) {
+  const card = document.createElement("div");
+  card.className = "recipe-card";
+
+  // Header
+  const header = document.createElement("div");
+  header.className = "recipe-header";
+
+  const name = document.createElement("div");
+  name.className = "recipe-name";
+  name.textContent = recipe.name;
+
+  // ⭐ Favorite toggle
+  const star = document.createElement("span");
+  star.className = "favorite";
+  star.textContent = recipe.isFavorite ? "⭐" : "☆";
+
+  star.addEventListener("click", () => {
+    recipes = recipes.map(r =>
+      r.id === recipe.id ? { ...r, isFavorite: !r.isFavorite } : r
+    );
+    saveRecipes();
+    renderRecipes(searchInput.value);
+  });
+
+  header.appendChild(name);
+  header.appendChild(star);
+
+  // Content
+  const content = document.createElement("div");
+  content.className = "recipe-content";
+  content.textContent =
+    recipe.ingredients.join(", ") +
+    (recipe.notes ? ` | Notes: ${recipe.notes}` : "");
+
+  // Actions
+  const actions = document.createElement("div");
+  actions.className = "recipe-actions";
+
+  // ✏️ Edit
+  const editBtn = document.createElement("button");
+  editBtn.className = "edit-btn";
+  editBtn.textContent = "Edit";
+
+  editBtn.addEventListener("click", () => {
+    editingId = recipe.id;
+
+    nameInput.value = recipe.name;
+    ingredientsInput.value = recipe.ingredients.join(", ");
+    notesInput.value = recipe.notes || "";
+
+    modal.classList.add("active");
+  });
+
+  // 🗑 Delete
+  const deleteBtn = document.createElement("button");
+  deleteBtn.className = "delete-btn";
+  deleteBtn.textContent = "Delete";
+
+  deleteBtn.addEventListener("click", () => {
+    recipes = recipes.filter(r => r.id !== recipe.id);
+    saveRecipes();
+    renderRecipes(searchInput.value);
+  });
+
+  actions.appendChild(editBtn);
+  actions.appendChild(deleteBtn);
+
+  // Append
+  card.appendChild(header);
+  card.appendChild(content);
+  card.appendChild(actions);
+
+  return card;
+}
+
+
+// ==============================
+// 🪟 MODAL LOGIC
+// ==============================
+
+// Open modal (Add mode)
+addBtn.addEventListener("click", () => {
+  editingId = null;
+
+  nameInput.value = "";
+  ingredientsInput.value = "";
+  notesInput.value = "";
+
+  modal.classList.add("active");
+});
+
+// Close modal
+cancelBtn.addEventListener("click", () => {
+  modal.classList.remove("active");
+});
+
+// Save (Create or Update)
+saveBtn.addEventListener("click", () => {
+  const name = nameInput.value.trim();
+  const ingredients = ingredientsInput.value
+    .split(",")
+    .map(i => i.trim())
+    .filter(i => i);
+
+  const notes = notesInput.value.trim();
+
+  if (!name) {
+    alert("Recipe name is required");
+    return;
+  }
+
+  if (editingId) {
+    // Update
+    recipes = recipes.map(r =>
+      r.id === editingId ? { ...r, name, ingredients, notes } : r
+    );
+  } else {
+    // Create
+    recipes.push({
+      id: Date.now(),
+      name,
+      ingredients,
+      notes,
+      isFavorite: false
+    });
+  }
+
+  saveRecipes();
+  renderRecipes(searchInput.value);
+  modal.classList.remove("active");
+});
+
+
+// ==============================
+// 🔍 SEARCH
+// ==============================
+
+searchInput.addEventListener("input", (e) => {
+  renderRecipes(e.target.value);
+});
+
+
+// ==============================
+// 🚀 INIT
+// ==============================
+
+renderRecipes();

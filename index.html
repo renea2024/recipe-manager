@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recipe Manager</title>
+  <link rel="stylesheet" href="style.css">
+  
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <h1>Recipe Manager</h1>
+    <button id="addBtn">+ Add Recipe</button>
+  </header>
+
+  <!-- Search -->
+  <input type="text" id="search" placeholder="Search recipes...">
+
+  <!-- Favorites Section -->
+  <section id="favorites-section">
+    <h2>Favorites</h2>
+    <div id="favorites" class="recipes-container">
+      <div class="empty">No favorites yet.</div>
+    </div>
+  </section>
+
+  <!-- All Recipes Section -->
+  <section id="recipes-section">
+    <h2>All Recipes</h2>
+    <div id="recipes" class="recipes-container">
+      <div class="empty">No recipes added yet.</div>
+    </div>
+  </section>
+
+  <!-- Add Recipe Modal -->
+  <div id="modal">
+    <div class="modal-content">
+      <h2>Add Recipe</h2>
+      <input type="text" id="name" placeholder="Recipe name">
+      <textarea id="ingredients" rows="3" placeholder="Ingredients (comma separated)"></textarea>
+      <textarea id="notes" rows="2" placeholder="Notes"></textarea>
+      <div class="modal-buttons">
+        <button class="cancel-btn" id="cancelBtn">Cancel</button>
+        <button class="save-btn" id="saveBtn">Save</button>
+      </div>
+    </div>
+  </div>
+
+</body>
+<script src="app.js"></script>
+</html>
