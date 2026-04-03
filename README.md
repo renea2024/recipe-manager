@@ -1,81 +1,56 @@
 # Recipe Manager
 
-A simple, interactive Recipe Manager web app built with **HTML, CSS, and JavaScript**.  
-Save, search, favorite, and delete recipes with a clean, mobile-friendly interface. Recipes persist in **localStorage**, so your data stays in the browser.
+A minimalist web application for organizing recipes with a clean, user-friendly interface.
 
----
+## Description
+
+Recipe Manager allows users to create, view, and manage recipes in a simple and structured way. The application focuses on clarity and ease of use, separating quick previews from detailed views to improve the overall user experience.
 
 ## Features
 
-- Add new recipes with **name**, **ingredients**, and **notes**.
-- Mark recipes as **favorites** (⭐) to quickly access them.
-- **Delete recipes** you no longer need.
-- **Search recipes** by name or ingredients.
-- **Responsive design** for desktop and mobile screens.
-- Data is saved in **localStorage**, so recipes persist between sessions.
+- Add, edit, and delete recipes  
+- Ingredients displayed as bullet points  
+- Steps displayed as a numbered list  
+- Mark and organize favorite recipes  
+- Search recipes by name  
+- Expand recipes to view full details  
+- Persistent data using localStorage  
 
----
+## Technologies Used
 
-## Folder Structure
+- HTML  
+- CSS  
+- JavaScript (Vanilla)
 
-recipe-manager/
-- index.html          # Main HTML file
-- style.css           # Stylesheet
-- app.js              # JavaScript functionality
-- README.md           # Project documentation
+## Key Concepts
 
----
+- DOM manipulation  
+- Event handling  
+- State management  
+- Local storage persistence  
+- Responsive layout with CSS Grid  
+- Clean and minimal UI design  
 
-## How It Works
+## How to Use
 
-1. **Add Recipe**
-   - Click `+ Add Recipe` in the header.
-   - Fill in recipe name, ingredients (comma separated), and optional notes.
-   - Click **Save** to store it in localStorage.
+1. Click **“Add Recipe”** to create a new recipe  
+2. Enter a name, ingredients (one per line), and steps (one per line)  
+3. Save to add it to your collection  
+4. Click a recipe card to view full details  
+5. Use the star icon to mark favorites  
+6. Use the search bar to filter recipes  
 
-2. **View Recipes**
-   - Recipes are displayed in two sections:
-     - **All Recipes**
-     - **Favorites**
-   - Click the star ⭐ to toggle favorite status.
+## Future Improvements
 
-3. **Delete Recipe**
-   - Click **Delete** on any recipe card to remove it permanently.
+- Add categories or tags  
+- Improve accessibility  
+- Add animations and transitions  
+- Integrate backend storage  
 
-4. **Search**
-   - Use the search bar to filter recipes by name or ingredients in real-time.
+## Live Demo
 
-5. **Persistence**
-   - All changes are automatically saved to your browser using localStorage.
-
----
-
-## Tech Stack
-
-- **HTML5** – Structure of the app
-- **CSS3** – Styling and responsive design
-- **JavaScript (Vanilla)** – App logic, DOM manipulation, and localStorage persistence
-
----
-
-## Usage
-
-1. Clone the repo:
-
-`git clone https://github.com/renea2024/recipe-manager.git`
-
-2. Open `index.html` in your browser.
-3. Start adding, searching, favoriting, and deleting recipes.
-
----
-
-## Planned Improvements
-- Implement **drag-and-drop** sorting for recipes.
-- Add **export/import recipes** to JSON.
-- Improve accessibility and keyboard navigation.
-
----
+https://renea2024.github.io/recipe-manager/
 
 ## License
 
-This project is licensed under the **MIT License**.
+This project is open source and available under the MIT License.

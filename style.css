@@ -1,4 +1,3 @@
-
 /* ===== Global Styles ===== */
 * {
   box-sizing: border-box;
@@ -8,18 +7,10 @@
 }
 
 body {
-  background-color: #fff8f2; /* soft warm off-white */
-  color: #3b2f2f; /* dark brown for text */
+  background: #fafafa;
+  color: #2c2c2c;
   min-height: 100vh;
   padding: 20px;
-}
-
-button {
-  cursor: pointer;
-  border: none;
-  outline: none;
-  min-height: 40px; /* easier for touch */
-  min-width: 60px;
 }
 
 /* ===== Header ===== */
@@ -31,67 +22,77 @@ header {
 }
 
 header h1 {
-  font-size: 1.8rem;
-  font-weight: bold;
+  font-size: 1.6rem;
+  font-weight: 600;
 }
 
 header button {
-  background-color: #f97316; /* vibrant orange */
+  background: #f97316;
   color: white;
-  border-radius: 8px;
-  padding: 8px 16px;
-  transition: background 0.2s;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: 0.2s;
 }
 
 header button:hover {
-  background-color: #ea580c; /* darker orange on hover */
+  background: #ea580c;
 }
 
-/* ===== Search Bar ===== */
+/* ===== Search ===== */
 #search {
-  width: 100%;
-  padding: 10px 14px;
-  border-radius: 8px;
-  border: 1px solid #fcd34d; /* warm yellow */
-  margin-bottom: 20px;
-  font-size: 1rem;
+  display: block;
+  width: 80%;
+  max-width: 400px;
+  margin: 0 auto 30px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  font-size: 0.95rem;
 }
 
-/* ===== Recipe Sections ===== */
+/* ===== Sections ===== */
 section {
-  margin-bottom: 30px;
+  margin-bottom: 25px;
 }
 
 section h2 {
   margin-bottom: 12px;
   font-size: 1.2rem;
-  font-weight: 600;
-  color: #dc2626; /* appetizing red */
+  font-weight: 500;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 4px;
 }
 
+/* ===== Recipe Grid ===== */
 .recipes-container {
   display: grid;
-  gap: 16px;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  max-height: 60vh; /* scrollable on mobile */
-  overflow-y: auto;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 260px));
+  gap: 18px;
+  justify-content: center;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
 /* ===== Recipe Card ===== */
 .recipe-card {
-  background-color: #fff2e8;
-  border-radius: 16px;
-  padding: 16px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  background: white;
+  border-radius: 12px;
+  padding: 14px;
+  min-height: 180px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  border: 1px solid #eee;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  cursor: pointer;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .recipe-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
 .recipe-header {
@@ -102,69 +103,73 @@ section h2 {
 }
 
 .recipe-name {
-  font-weight: bold;
-  font-size: 1.1rem;
-  color: #b91c1c;
+  font-weight: 600;
+  font-size: 1.05rem;
 }
 
 .favorite {
-  color: #fbbf24; /* yellow star */
   font-size: 1.2rem;
   cursor: pointer;
+  color: #fbbf24;
 }
 
+/* ===== Recipe Content ===== */
 .recipe-content {
-  font-size: 0.95rem;
-  color: #6b4226;
-  margin-bottom: 12px;
-  word-wrap: break-word; /* prevent overflow */
+  font-size: 0.9rem;
+  color: #555;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
 }
 
+/* ===== Action Buttons ===== */
 .recipe-actions {
   display: flex;
-  gap: 10px;
+  gap: 8px;
+  margin-top: 8px;
 }
 
 .recipe-actions button {
   flex: 1;
-  padding: 6px 0;
-  border-radius: 8px;
-  font-size: 0.9rem;
+  padding: 6px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: 0.2s;
 }
 
 .edit-btn {
-  background-color: #fde68a;
-  color: #78350f;
+  background: #f1f1f1;
 }
 
 .delete-btn {
-  background-color: #ef4444;
+  background: #f97316;
   color: white;
 }
 
 .edit-btn:hover {
-  background-color: #fcd34d;
+  background: #e0e0e0;
 }
 
 .delete-btn:hover {
-  background-color: #dc2626;
+  background: #ea580c;
 }
 
 /* ===== Modal ===== */
 #modal {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.4);
+  inset: 0;
+  background: rgba(0,0,0,0.4);
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 20px;
   visibility: hidden;
   opacity: 0;
-  transition: opacity 0.2s, visibility 0.2s;
+  transition: 0.2s;
+  z-index: 100;
 }
 
 #modal.active {
@@ -173,123 +178,105 @@ section h2 {
 }
 
 .modal-content {
-  background-color: #fff2e8;
-  border-radius: 16px;
-  padding: 24px;
-  max-width: 400px;
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
   width: 100%;
+  max-width: 400px;
 }
 
 .modal-content h2 {
-  margin-bottom: 16px;
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #b91c1c;
+  margin-bottom: 12px;
+  font-size: 1.4rem;
 }
 
 .modal-content input,
 .modal-content textarea {
   width: 100%;
-  padding: 10px 12px;
-  border-radius: 8px;
-  border: 1px solid #fcd34d;
   margin-bottom: 12px;
-  font-size: 1rem;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  font-size: 0.95rem;
 }
 
 .modal-buttons {
   display: flex;
   justify-content: flex-end;
-  gap: 10px;
-}
-
-.modal-buttons button {
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-weight: 500;
+  gap: 8px;
 }
 
 .save-btn {
-  background-color: #f97316;
+  background: #f97316;
   color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
 }
 
 .save-btn:hover {
-  background-color: #ea580c;
+  background: #ea580c;
 }
 
 .cancel-btn {
-  background-color: #fde68a;
-  color: #78350f;
+  background: #f1f1f1;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
 }
 
 .cancel-btn:hover {
-  background-color: #fcd34d;
+  background: #e0e0e0;
 }
 
-/* ===== Empty State ===== */
+/* ===== Overlay for expanded recipe ===== */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.2s;
+  z-index: 90;
+}
+
+.overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.expanded-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.expanded-card h3 {
+  margin-bottom: 12px;
+}
+
+.expanded-card ul {
+  padding-left: 20px;
+  margin-bottom: 12px;
+}
+
+.expanded-card ol {
+  padding-left: 20px;
+  margin-bottom: 12px;
+}
+
+/* ===== Empty States ===== */
 .empty {
-  font-style: italic;
-  color: #a16207;
   text-align: center;
-  padding: 16px 0;
-}
-
-/* ===== Mobile Responsive ===== */
-@media (max-width: 480px) {
-  body {
-    padding: 10px;
-  }
-
-  header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-  }
-
-  header h1 {
-    font-size: 1.5rem;
-  }
-
-  header button {
-    width: 100%;
-  }
-
-  #search {
-    font-size: 0.95rem;
-    padding: 8px 10px;
-  }
-
-  .recipes-container {
-    grid-template-columns: 1fr; /* stack cards */
-    gap: 12px;
-    max-height: 50vh;
-  }
-
-  .recipe-card {
-    padding: 12px;
-    font-size: 0.9rem;
-  }
-
-  .recipe-actions button {
-    font-size: 0.85rem;
-    padding: 6px 0;
-  }
-
-  .modal-content {
-    max-width: 100%;
-    padding: 16px;
-  }
-
-  .modal-content input,
-  .modal-content textarea {
-    font-size: 0.95rem;
-    padding: 8px 10px;
-  }
-
-  .modal-buttons button {
-    flex: 1;
-    padding: 8px 0;
-    font-size: 0.9rem;
-  }
+  color: #aaa;
+  padding: 20px 0;
 }

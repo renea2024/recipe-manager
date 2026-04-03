@@ -1,103 +1,63 @@
-// ==============================
-// 📌 GLOBAL CONSTANTS & SELECTORS
-// ==============================
-
-// Storage key
 const STORAGE_KEY = "recipes";
 
-// Inputs & UI
 const searchInput = document.getElementById("search");
 const recipesContainer = document.getElementById("recipes");
 const favoritesContainer = document.getElementById("favorites");
 
-// Modal عناصر
 const modal = document.getElementById("modal");
 const nameInput = document.getElementById("name");
 const ingredientsInput = document.getElementById("ingredients");
-const notesInput = document.getElementById("notes");
+const stepsInput = document.getElementById("steps");
 
 const addBtn = document.getElementById("addBtn");
 const saveBtn = document.getElementById("saveBtn");
 const cancelBtn = document.getElementById("cancelBtn");
 
-// Track editing state
+const overlay = document.getElementById("overlay");
+
 let editingId = null;
 
-
-// ==============================
-// 💾 LOCAL STORAGE
-// ==============================
-
-// Save to localStorage
-function saveRecipes() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(recipes));
-}
-
-// Load from localStorage or fallback data
+// Default recipes
 let recipes = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [
   {
     id: Date.now(),
     name: "BBQ Chicken",
     ingredients: ["Chicken", "BBQ Sauce", "Garlic"],
+    steps: ["Marinate chicken", "Grill chicken", "Serve with sauce"],
     isFavorite: true
   },
   {
     id: Date.now() + 1,
     name: "Spaghetti",
-    ingredients: ["Pasta", "Tomato Sauce"],
+    ingredients: ["Pasta", "Tomato Sauce", "Salt"],
+    steps: ["Boil pasta", "Prepare sauce", "Combine and serve"],
     isFavorite: false
   }
 ];
 
+function saveRecipes() { localStorage.setItem(STORAGE_KEY, JSON.stringify(recipes)); }
 
-// ==============================
-// 🔍 RENDER FUNCTION
-// ==============================
-
-/**
- * Render recipes based on search
- */
+// Render recipes
 function renderRecipes(searchTerm = "") {
   recipesContainer.innerHTML = "";
   favoritesContainer.innerHTML = "";
 
   const query = searchTerm.toLowerCase();
-
-  const filteredRecipes = recipes.filter(recipe => {
-    const nameMatch = recipe.name.toLowerCase().includes(query);
-    const ingredientMatch = recipe.ingredients.some(ing =>
-      ing.toLowerCase().includes(query)
-    );
-    return nameMatch || ingredientMatch;
-  });
+  const filteredRecipes = recipes.filter(r => r.name.toLowerCase().includes(query));
 
   const favorites = filteredRecipes.filter(r => r.isFavorite);
 
-  // Render all
-  filteredRecipes.forEach(recipe => {
-    recipesContainer.appendChild(createRecipeCard(recipe));
-  });
+  filteredRecipes.forEach(recipe => recipesContainer.appendChild(createRecipeCard(recipe)));
 
-  // Render favorites
-  if (favorites.length === 0) {
-    favoritesContainer.innerHTML = `<div class="empty">No favorites found.</div>`;
-  } else {
-    favorites.forEach(recipe => {
-      favoritesContainer.appendChild(createRecipeCard(recipe));
-    });
-  }
+  if (favorites.length === 0) favoritesContainer.innerHTML = `<div class="empty">No favorites found.</div>`;
+  else favorites.forEach(recipe => favoritesContainer.appendChild(createRecipeCard(recipe)));
 }
 
-
-// ==============================
-// 🧱 CREATE CARD
-// ==============================
-
+// Create recipe card
 function createRecipeCard(recipe) {
   const card = document.createElement("div");
   card.className = "recipe-card";
 
-  // Header
   const header = document.createElement("div");
   header.className = "recipe-header";
 
@@ -105,54 +65,34 @@ function createRecipeCard(recipe) {
   name.className = "recipe-name";
   name.textContent = recipe.name;
 
-  // ⭐ Favorite toggle
   const star = document.createElement("span");
   star.className = "favorite";
   star.textContent = recipe.isFavorite ? "⭐" : "☆";
-
-  star.addEventListener("click", () => {
-    recipes = recipes.map(r =>
-      r.id === recipe.id ? { ...r, isFavorite: !r.isFavorite } : r
-    );
-    saveRecipes();
-    renderRecipes(searchInput.value);
-  });
+  star.addEventListener("click", e => { e.stopPropagation(); recipe.isFavorite = !recipe.isFavorite; saveRecipes(); renderRecipes(searchInput.value); });
 
   header.appendChild(name);
   header.appendChild(star);
 
-  // Content
-  const content = document.createElement("div");
-  content.className = "recipe-content";
-  content.textContent =
-    recipe.ingredients.join(", ") +
-    (recipe.notes ? ` | Notes: ${recipe.notes}` : "");
-
-  // Actions
   const actions = document.createElement("div");
   actions.className = "recipe-actions";
 
-  // ✏️ Edit
   const editBtn = document.createElement("button");
   editBtn.className = "edit-btn";
   editBtn.textContent = "Edit";
-
-  editBtn.addEventListener("click", () => {
+  editBtn.addEventListener("click", e => {
+    e.stopPropagation();
     editingId = recipe.id;
-
     nameInput.value = recipe.name;
-    ingredientsInput.value = recipe.ingredients.join(", ");
-    notesInput.value = recipe.notes || "";
-
+    ingredientsInput.value = recipe.ingredients.join("\n");
+    stepsInput.value = recipe.steps.join("\n");
     modal.classList.add("active");
   });
 
-  // 🗑 Delete
   const deleteBtn = document.createElement("button");
   deleteBtn.className = "delete-btn";
   deleteBtn.textContent = "Delete";
-
-  deleteBtn.addEventListener("click", () => {
+  deleteBtn.addEventListener("click", e => {
+    e.stopPropagation();
     recipes = recipes.filter(r => r.id !== recipe.id);
     saveRecipes();
     renderRecipes(searchInput.value);
@@ -161,64 +101,51 @@ function createRecipeCard(recipe) {
   actions.appendChild(editBtn);
   actions.appendChild(deleteBtn);
 
-  // Append
   card.appendChild(header);
-  card.appendChild(content);
   card.appendChild(actions);
+
+  card.addEventListener("click", () => {
+    overlay.innerHTML = `<div class="expanded-card">
+      <h3>${recipe.name}</h3>
+      <div class="section">
+        <h4>Ingredients</h4>
+        <ul>${recipe.ingredients.map(i => `<li>${i}</li>`).join("")}</ul>
+      </div>
+      <div class="section">
+        <h4>Steps</h4>
+        <ol>${recipe.steps.map(s => `<li>${s}</li>`).join("")}</ol>
+      </div>
+    </div>`;
+    overlay.classList.add("active");
+  });
 
   return card;
 }
 
-
-// ==============================
-// 🪟 MODAL LOGIC
-// ==============================
-
-// Open modal (Add mode)
+// Modal logic
 addBtn.addEventListener("click", () => {
   editingId = null;
-
   nameInput.value = "";
   ingredientsInput.value = "";
-  notesInput.value = "";
-
+  stepsInput.value = "";
   modal.classList.add("active");
 });
 
-// Close modal
-cancelBtn.addEventListener("click", () => {
-  modal.classList.remove("active");
-});
+cancelBtn.addEventListener("click", () => modal.classList.remove("active"));
 
-// Save (Create or Update)
 saveBtn.addEventListener("click", () => {
   const name = nameInput.value.trim();
-  const ingredients = ingredientsInput.value
-    .split(",")
-    .map(i => i.trim())
-    .filter(i => i);
+  const ingredients = ingredientsInput.value.split("\n").map(i => i.trim()).filter(Boolean);
+  const steps = stepsInput.value.split("\n").map(s => s.trim()).filter(Boolean);
 
-  const notes = notesInput.value.trim();
-
-  if (!name) {
-    alert("Recipe name is required");
-    return;
-  }
+  if (!name) return alert("Recipe name is required");
+  if (ingredients.length === 0) return alert("Enter at least one ingredient");
+  if (steps.length === 0) return alert("Enter at least one step");
 
   if (editingId) {
-    // Update
-    recipes = recipes.map(r =>
-      r.id === editingId ? { ...r, name, ingredients, notes } : r
-    );
+    recipes = recipes.map(r => r.id === editingId ? {...r, name, ingredients, steps} : r);
   } else {
-    // Create
-    recipes.push({
-      id: Date.now(),
-      name,
-      ingredients,
-      notes,
-      isFavorite: false
-    });
+    recipes.push({id: Date.now(), name, ingredients, steps, isFavorite: false});
   }
 
   saveRecipes();
@@ -226,18 +153,12 @@ saveBtn.addEventListener("click", () => {
   modal.classList.remove("active");
 });
 
+// Search
+searchInput.addEventListener("input", e => renderRecipes(e.target.value));
 
-// ==============================
-// 🔍 SEARCH
-// ==============================
+// Overlay close
+overlay.addEventListener("click", () => overlay.classList.remove("active"));
+document.addEventListener("keydown", e => { if(e.key === "Escape") overlay.classList.remove("active"); });
 
-searchInput.addEventListener("input", (e) => {
-  renderRecipes(e.target.value);
-});
-
-
-// ==============================
-// 🚀 INIT
-// ==============================
-
+// Initial render
 renderRecipes();
