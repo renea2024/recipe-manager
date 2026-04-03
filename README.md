@@ -1,10 +1,10 @@
 # Recipe Manager
 
-A minimalist web application for organizing recipes with a clean, user-friendly interface.
+A minimalist web application for organizing and preserving recipes with a clean, intuitive interface.
 
 ## Description
 
-Recipe Manager allows users to create, view, and manage recipes in a simple and structured way. The application focuses on clarity and ease of use, separating quick previews from detailed views to improve the overall user experience.
+Recipe Manager was built to solve a personal need: creating a simple way to store and manage family recipes that had not been written down. The application focuses on clarity and ease of use, allowing users to quickly add, view, and organize recipes without unnecessary complexity.
 
 ## Features
 
@@ -12,7 +12,8 @@ Recipe Manager allows users to create, view, and manage recipes in a simple and 
 - Ingredients displayed as bullet points  
 - Steps displayed as a numbered list  
 - Mark and organize favorite recipes  
-- Search recipes by name  
+- Search recipes by name or ingredients  
+- Debounced search for improved performance and user experience  
 - Expand recipes to view full details  
 - Persistent data using localStorage  
 
@@ -25,15 +26,16 @@ Recipe Manager allows users to create, view, and manage recipes in a simple and 
 ## Key Concepts
 
 - DOM manipulation  
-- Event handling  
-- State management  
+- Event handling and event delegation  
+- State management using JavaScript  
 - Local storage persistence  
+- Debounced search optimization  
 - Responsive layout with CSS Grid  
-- Clean and minimal UI design  
+- Clean and consistent UI design  
 
 ## How to Use
 
-1. Click **“Add Recipe”** to create a new recipe  
+1. Click **“Add”** to create a new recipe  
 2. Enter a name, ingredients (one per line), and steps (one per line)  
 3. Save to add it to your collection  
 4. Click a recipe card to view full details  
@@ -42,15 +44,16 @@ Recipe Manager allows users to create, view, and manage recipes in a simple and 
 
 ## Future Improvements
 
-- Add categories or tags  
-- Improve accessibility  
+- Add categories or tags for better organization  
+- Improve accessibility (keyboard navigation, ARIA labels)  
 - Add animations and transitions  
-- Integrate backend storage  
+- Integrate backend storage and user accounts  
 
 ## Live Demo
 
-https://renea2024.github.io/recipe-manager/
+renea2024.github.io/recipe-manager
 
 ## License
 
 This project is open source and available under the MIT License.
+

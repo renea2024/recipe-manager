@@ -1,4 +1,22 @@
-/* ===== Global Styles ===== */
+/* ===== DESIGN TOKENS ===== */
+:root {
+  --bg: #f9f7f4;
+  --card: #ffffff;
+  --border: #e8e3dc;
+
+  --text-primary: #2d2d2d;
+  --text-secondary: #6f6f6f;
+
+  --accent: #ea6a2a;
+  --accent-hover: #d65a1f;
+
+  --shadow-sm: 0 2px 6px rgba(0,0,0,0.04);
+  --shadow-md: 0 10px 25px rgba(0,0,0,0.08);
+
+  --radius: 12px;
+}
+
+/* ===== GLOBAL ===== */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -7,197 +25,240 @@
 }
 
 body {
-  background: #fafafa;
-  color: #2c2c2c;
-  min-height: 100vh;
-  padding: 20px;
+  background: var(--bg);
+  color: var(--text-primary);
+  padding: 24px;
+  line-height: 1.5;
 }
 
-/* ===== Header ===== */
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-header h1 {
-  font-size: 1.6rem;
-  font-weight: 600;
-}
-
-header button {
-  background: #f97316;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 6px 12px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-header button:hover {
-  background: #ea580c;
-}
-
-/* ===== Search ===== */
-#search {
-  display: block;
-  width: 80%;
-  max-width: 400px;
-  margin: 0 auto 30px;
-  padding: 8px 12px;
-  border-radius: 6px;
-  border: 1px solid #ddd;
-  font-size: 0.95rem;
-}
-
-/* ===== Sections ===== */
-section {
-  margin-bottom: 25px;
-}
-
-section h2 {
-  margin-bottom: 12px;
-  font-size: 1.2rem;
-  font-weight: 500;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 4px;
-}
-
-/* ===== Recipe Grid ===== */
-.recipes-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 260px));
-  gap: 18px;
-  justify-content: center;
+/* ===== LAYOUT ===== */
+main {
   max-width: 1000px;
   margin: 0 auto;
 }
 
-/* ===== Recipe Card ===== */
-.recipe-card {
-  background: white;
-  border-radius: 12px;
-  padding: 14px;
-  min-height: 180px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  border: 1px solid #eee;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
+/* ===== HEADER (COMPACT + CLEAN) ===== */
+header {
+  max-width: 1000px;
+  margin: 0 auto 20px;
 
-.recipe-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-.recipe-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
+  justify-content: space-between;
+
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--divider);
 }
 
-.recipe-name {
+/* Left side (title) */
+header h1 {
+  font-size: 1.3rem;
   font-weight: 600;
-  font-size: 1.05rem;
+  letter-spacing: -0.2px;
 }
 
-.favorite {
-  font-size: 1.2rem;
-  cursor: pointer;
-  color: #fbbf24;
-}
-
-/* ===== Recipe Content ===== */
-.recipe-content {
-  font-size: 0.9rem;
-  color: #555;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
-}
-
-/* ===== Action Buttons ===== */
-.recipe-actions {
+/* Right side (actions) */
+.header-actions {
   display: flex;
-  gap: 8px;
-  margin-top: 8px;
+  align-items: center;
+  gap: 10px;
 }
 
-.recipe-actions button {
-  flex: 1;
-  padding: 6px;
+/* Add button refined */
+#addBtn {
+  background: var(--accent);
+  color: white;
+  padding: 5px 12px;
+  font-size: 0.8rem;
   border-radius: 6px;
   border: none;
-  cursor: pointer;
+}
+
+#addBtn:hover {
+  background: var(--accent-hover);
+}
+
+
+/* ===== BUTTON SYSTEM ===== */
+button {
+  border: none;
+  border-radius: 6px;
   font-size: 0.85rem;
-  transition: 0.2s;
+  padding: 6px 12px;
+  cursor: pointer;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: all 0.2s ease;
 }
 
-.edit-btn {
-  background: #f1f1f1;
-}
-
-.delete-btn {
-  background: #f97316;
+.btn-primary {
+  background: var(--accent);
   color: white;
 }
 
-.edit-btn:hover {
-  background: #e0e0e0;
+.btn-primary:hover {
+  background: var(--accent-hover);
 }
 
-.delete-btn:hover {
-  background: #ea580c;
+.btn-secondary {
+  background: #f3efe9;
+  color: var(--text-primary);
 }
 
-/* ===== Modal ===== */
-#modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.4);
-  display: flex;
+.btn-secondary:hover {
+  background: #e7e1da;
+}
+
+.btn-sm {
+  padding: 4px 8px;
+  font-size: 0.75rem;
+}
+
+/* ===== SEARCH ===== */
+#search {
+  display: block;
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto 32px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: #ffffff;
+  font-size: 0.95rem;
+  transition: border 0.2s;
+}
+
+#search:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+/* ===== SECTIONS ===== */
+section {
+  margin-bottom: 32px;
+}
+
+section h2 {
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: 14px;
+}
+
+/* ===== GRID ===== */
+.recipes-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 260px));
   justify-content: center;
-  align-items: center;
-  padding: 20px;
-  visibility: hidden;
-  opacity: 0;
-  transition: 0.2s;
-  z-index: 100;
+  gap: 18px;
 }
 
-#modal.active {
-  visibility: visible;
+/* ===== CARD ===== */
+.recipe-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.recipe-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+/* subtle accent strip */
+.recipe-card::before {
+  content: "";
+  width: 4px;
+  height: 100%;
+  background: var(--accent);
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+/* ===== CARD CONTENT ===== */
+.recipe-name {
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+/* ===== FAVORITE ===== */
+.favorite {
+  font-size: 1.1rem;
+  opacity: 0.6;
+  transition: 0.2s;
+}
+
+.favorite:hover {
   opacity: 1;
 }
 
+/* ===== CARD ACTIONS ===== */
+.recipe-actions {
+  display: flex;
+  gap: 6px;
+}
+
+/* ===== MODAL ===== */
+#modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.3);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.2s;
+}
+
+#modal.active {
+  opacity: 1;
+  visibility: visible;
+}
+
 .modal-content {
-  background: white;
-  border-radius: 12px;
-  padding: 20px;
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 22px;
   width: 100%;
-  max-width: 400px;
+  max-width: 420px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  box-shadow: var(--shadow-md);
 }
 
 .modal-content h2 {
-  margin-bottom: 12px;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
 }
 
 .modal-content input,
 .modal-content textarea {
-  width: 100%;
-  margin-bottom: 12px;
   padding: 8px 10px;
   border-radius: 6px;
-  border: 1px solid #ddd;
-  font-size: 0.95rem;
+  border: 1px solid var(--border);
+  font-size: 0.9rem;
+}
+
+.modal-content textarea {
+  resize: vertical;
 }
 
 .modal-buttons {
@@ -206,43 +267,19 @@ section h2 {
   gap: 8px;
 }
 
-.save-btn {
-  background: #f97316;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 6px 12px;
-  cursor: pointer;
-}
-
-.save-btn:hover {
-  background: #ea580c;
-}
-
-.cancel-btn {
-  background: #f1f1f1;
-  border: none;
-  border-radius: 6px;
-  padding: 6px 12px;
-  cursor: pointer;
-}
-
-.cancel-btn:hover {
-  background: #e0e0e0;
-}
-
-/* ===== Overlay for expanded recipe ===== */
+/* ===== OVERLAY ===== */
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.4);
+  background: rgba(0,0,0,0.35);
+
   display: flex;
   justify-content: center;
   align-items: center;
+
   opacity: 0;
   visibility: hidden;
   transition: 0.2s;
-  z-index: 90;
 }
 
 .overlay.active {
@@ -251,32 +288,29 @@ section h2 {
 }
 
 .expanded-card {
-  background: white;
-  border-radius: 12px;
+  background: var(--card);
+  border-radius: var(--radius);
   padding: 24px;
   width: 90%;
-  max-width: 500px;
-  max-height: 80vh;
-  overflow-y: auto;
+  max-width: 520px;
+
+  box-shadow: var(--shadow-md);
 }
 
 .expanded-card h3 {
   margin-bottom: 12px;
 }
 
-.expanded-card ul {
-  padding-left: 20px;
-  margin-bottom: 12px;
-}
-
+.expanded-card ul,
 .expanded-card ol {
   padding-left: 20px;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
+  color: var(--text-secondary);
 }
 
-/* ===== Empty States ===== */
+/* ===== EMPTY ===== */
 .empty {
   text-align: center;
-  color: #aaa;
-  padding: 20px 0;
+  color: #a8a29e;
+  font-size: 0.9rem;
 }
